@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css" rel="stylesheet">
+</head>
+<body>
+  <div class="container">
+    <div class="row">
+      <div class="span12">
+        
+        <% if @link %>
+          <h1>Processing Complete</h1>
+          <a class="file-download btn" href="<%= @link %>" target="_blank">Download processed file.</a>
+          <h1>Go again?</h1>
+        <% else %>
+          <h1>Upload CSV</h1>
+        <% end %>
+        
+        <form class="form-inline well" method="post" enctype="multipart/form-data">
+          <input type="file" name="file" />
+          <input id="submit" type="submit" class="btn btn-primary" />
+        </form>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
