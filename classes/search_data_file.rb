@@ -27,7 +27,7 @@ class SearchDataFile
   end
 
   def phrases_to_words
-    phrases.map { |phrase| phrase.words }
+    phrases.map { |phrase| phrase.words }.flatten
   end
 
   def phrases
@@ -43,7 +43,7 @@ class SearchDataFile
   end
 
   def processed_list
-    @processed_list ||= ListProcessor.new(words).combine(:hits, :on => :text).depluralize.remove_stop_words.list
+    @processed_list ||= ListProcessor.new(words).combined_list
   end
 
   def write_processed_list(csv)

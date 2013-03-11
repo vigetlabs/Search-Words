@@ -1,56 +1,37 @@
 class ListProcessor
-  include Depluralizer, StopWordRemover
+
+  attr_reader :raw_list
 
   def initialize(raw_list)
     @raw_list = raw_list
-    @options = {}
   end
 
-  def combine(values, params)
-    set_option(:values, values)
-    params.each { |key, value| set_option(key, value) }
-    self
-  end
-
-  def list
-      keyed_list.map { |key, entry| entry }
+  def combined_list
+    combined_list ||= processed_list.map { |key, entry| entry }
   end
 
   private
 
-  attr_reader :raw_list
-  attr_accessor :options
-
-  def keyed_list
-    @keyed_list ||= combine!(@raw_list)
-  end
-
-  def set_option(option, value)
-    options[option] = value
-  end
-
-  def combine!(list)
-    raise "Must set 'on' option for keying." if options[:on].nil?
-    raise "Must set 'values' option for keying." if options[:values].nil?
-
-    processed_list = {}
-    list.flatten.each do |entry|
-      combine_entry(processed_list, entry)
+  def processed_list
+    @processed_list ||= combined_list.tap do |list|
+      StopWordRemover.new(list).remove_stop_words
+      Depluralizer.new(list).depluralize
     end
-    processed_list
+  end
+
+  def combined_list
+    raw_list.inject({}) do |processed_list, entry|
+      combine_entry(processed_list, entry)
+      processed_list
+    end
   end
 
   def combine_entry(list, entry)
-    key = entry.send(options[:on])
+    key = entry.text
     if list.has_key?(key)
-      combination_value = entry.send(options[:values]) + list[key].send(options[:values])
-      list[key].send("#{options[:values]}=", combination_value)
+      list[key].hits += entry.hits
     else
       list[key] = entry
     end
-  end
-
-  def require_keyed_list(msg = "Keyed list required. Use #combine to key the raw list.")
-    raise msg if keyed_list.nil?
   end
 end
