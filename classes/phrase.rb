@@ -1,4 +1,6 @@
 class Phrase
+  attr_reader :hits, :text
+
   def initialize(params)
     hits = params[:hits] || 0
     text = params[:text]
@@ -14,8 +16,6 @@ class Phrase
   end
 
   private
-
-  attr_reader :hits, :text
 
   def text_to_words(text, hits)
     text.split(" ").map do |word|

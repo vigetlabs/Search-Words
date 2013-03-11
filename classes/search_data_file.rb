@@ -1,4 +1,6 @@
 class SearchDataFile
+  attr_reader :input_path, :original_filename
+
   def initialize(file_params)
     @input_path = file_params[:tempfile]
     @original_filename = file_params[:filename]
@@ -20,14 +22,12 @@ class SearchDataFile
 
   private
 
-  attr_reader :input_path, :original_filename
-
   def words
     @words ||= phrases_to_words
   end
 
   def phrases_to_words
-    phrases.map { |phrase| phrase.words }
+    phrases.map { |phrase| phrase.words }.flatten
   end
 
   def phrases
@@ -43,7 +43,7 @@ class SearchDataFile
   end
 
   def processed_list
-    @processed_list ||= ListProcessor.new(words).combine(:hits, :on => :text).depluralize.remove_stop_words.list
+    @processed_list ||= ProcessingManager.new(words).list
   end
 
   def write_processed_list(csv)

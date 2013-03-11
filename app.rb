@@ -4,8 +4,8 @@ require 'fileutils'
 require 'rubygems'
 require 'active_support/inflector'
 require "#{settings.root}/helpers/application_helper.rb"
-
-require_directories([:modules, :classes])
+$LOAD_PATH.unshift(File.join(File.dirname(__FILE__), 'classes'))
+Dir.glob(settings.root + '/classes/*.rb') {|file| require file}
 
 class SearchWordApp < Sinatra::Base
   get "/" do
