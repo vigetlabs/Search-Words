@@ -1,21 +1,24 @@
 class Phrase
-  attr_reader :words
-
   def initialize(text, hits)
-    hits = clean_int(hits)
-    text = clean_string(text)
-    @words = text_to_words(text, hits)
+    @hits = convert_to_int(hits)
+    @text = clean_string(text)
   end
 
   def tally
-    words.each { |word| word.tally }
+    words.each(&:tally)
+  end
+
+  def words
+    @words ||= text_to_words(text, hits)
   end
 
   private
 
+  attr_reader :hits, :text
+
   def text_to_words(text, hits)
-    text.split(" ").inject([]) do |word_array, word|
-      word_array << Word.new(word, hits)
+    text.split(" ").map do |word|
+      Word.new(word, hits)
     end
   end
 
@@ -23,11 +26,7 @@ class Phrase
     dirty_string.squeeze(" ").downcase
   end
 
-  def clean_int(dirty_int)
-    if [Integer, Fixnum, Float].include? dirty_int.class
-      dirty_int
-    else
-      dirty_int.gsub(/[^\d]/,"").to_i 
-    end
+  def convert_to_int(string)
+    string.gsub(/[^\d\.]/,"").to_i
   end
 end

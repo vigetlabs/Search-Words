@@ -12,7 +12,7 @@ class SearchWordApp < Sinatra::Base
   end
 
   get "/file/:access_code/:filename" do
-    send_file "#{settings.root}/processed_files/#{params[:access_code].gsub(".","")}.csv", :filename => params[:filename], :type => 'Application/octet-stream'
+    send_file file_path(params[:access_code].gsub(".","")), :filename => params[:filename], :type => 'application/octet-stream'
   end
 
   post "/" do
@@ -20,5 +20,11 @@ class SearchWordApp < Sinatra::Base
     file.process.write
     @link = "/file/#{file.access_code}/#{file.name}"
     erb :index
+  end
+
+  private
+
+  def file_path(filename)
+    "#{settings.root}/processed_files/#{filename}.csv"
   end
 end

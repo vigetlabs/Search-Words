@@ -25,7 +25,7 @@ class Word
     list = @@list
     if list.has_key? text
       list[text] += hits
-    elsif not a_stop_word?
+    elsif not stop_word?
       list[text] = hits
     end
   end
@@ -58,7 +58,7 @@ class Word
     list.delete(word_to_remove)
   end
 
-  def a_stop_word?
+  def stop_word?
     self.class.stop_words.include?(text)
   end
 end
