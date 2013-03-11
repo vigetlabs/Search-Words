@@ -5,7 +5,7 @@ describe SearchWordApp do
     before { visit "/" }
 
     it "displays usage instructions" do
-      page.should have_content("Upload CSV")
+      page.should have_content("Upload a CSV")
     end
 
     it "displays an upload form" do
@@ -19,7 +19,7 @@ describe SearchWordApp do
       end
 
       it "displays a success message" do
-        page.should have_content("Processing Complete")
+        page.should have_content("file is ready")
       end
 
       it "displays a download link" do
@@ -34,7 +34,6 @@ describe SearchWordApp do
 
   describe "file download" do
     before do
-      Word.clear_list
       visit "/"
       attach_file "file", "#{settings.root}/spec/fixtures/files/sample.csv"
       click_button :submit

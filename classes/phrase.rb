@@ -1,11 +1,12 @@
 class Phrase
-  def initialize(text, hits)
+  def initialize(params)
+    hits = params[:hits] || 0
+    text = params[:text]
+
+    raise "Phrase text cannot be empty." if text.nil?
+
     @hits = convert_to_int(hits)
     @text = clean_string(text)
-  end
-
-  def tally
-    words.each(&:tally)
   end
 
   def words

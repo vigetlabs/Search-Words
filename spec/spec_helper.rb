@@ -15,6 +15,14 @@ def app
   SearchWordApp
 end
 
+def expect_exception(context, message)
+  context.describe "##{message}" do
+    it "raises an exception" do
+      expect{ processor.send(message) }.to raise_error
+    end
+  end
+end
+
 RSpec.configure do |config|
   config.include Rack::Test::Methods
   config.include Capybara::DSL

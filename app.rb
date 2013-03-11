@@ -3,8 +3,9 @@ require 'csv'
 require 'fileutils'
 require 'rubygems'
 require 'active_support/inflector'
+require "#{settings.root}/helpers/application_helper.rb"
 
-Dir["#{settings.root}/classes/*.rb"].each {|file| require file }
+require_directories([:modules, :classes])
 
 class SearchWordApp < Sinatra::Base
   get "/" do
@@ -12,19 +13,13 @@ class SearchWordApp < Sinatra::Base
   end
 
   get "/file/:access_code/:filename" do
-    send_file file_path(params[:access_code].gsub(".","")), :filename => params[:filename], :type => 'application/octet-stream'
+    send_file file_path(settings.root, params[:access_code].gsub(".","")), :filename => params[:filename], :type => 'application/octet-stream'
   end
 
   post "/" do
     file = SearchDataFile.new(params['file'])
-    file.process.write
+    file.write
     @link = "/file/#{file.access_code}/#{file.name}"
     erb :index
-  end
-
-  private
-
-  def file_path(filename)
-    "#{settings.root}/processed_files/#{filename}.csv"
   end
 end
