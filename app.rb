@@ -3,7 +3,6 @@ require 'csv'
 require 'fileutils'
 require 'rubygems'
 require 'active_support/inflector'
-require "#{settings.root}/helpers/application_helper.rb"
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), 'classes'))
 Dir.glob(settings.root + '/classes/*.rb') {|file| require file}
 
@@ -21,5 +20,9 @@ class SearchWordApp < Sinatra::Base
     file.write
     @link = "/file/#{file.access_code}/#{file.name}"
     erb :index
+  end
+
+  def file_path(root, filename)
+    "#{root}/processed_files/#{filename}.csv"
   end
 end
