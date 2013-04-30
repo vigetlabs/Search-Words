@@ -16,13 +16,31 @@ class SearchWordApp < Sinatra::Base
   end
 
   post "/" do
-    file = SearchDataFile.new(params['file'])
-    file.write
-    @link = "/file/#{file.access_code}/#{file.name}"
+    return file_selection_error unless csv_file_present?(params['file'])
+
+    begin
+      file = SearchDataFile.new(params['file'])
+      file.write
+      @link = "/file/#{file.access_code}/#{file.name}"
+    rescue
+      @error = "There provided file could not be processed."
+    end
+
     erb :index
   end
 
   def file_path(root, filename)
     "#{root}/processed_files/#{filename}.csv"
+  end
+
+  def csv_file_present?(file_params)
+    file_params &&
+    file_params[:filename] =~ /.*\.csv$/ &&
+    file_params[:type] == "text/csv"
+  end
+
+  def file_selection_error
+    @error = "Please select a .csv file."
+    erb :index
   end
 end
