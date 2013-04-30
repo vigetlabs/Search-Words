@@ -23,7 +23,7 @@ class SearchWordApp < Sinatra::Base
       file.write
       @link = "/file/#{file.access_code}/#{file.name}"
     rescue
-      @error = "There provided file could not be processed."
+      @error = "The provided file could not be processed."
     end
 
     erb :index
