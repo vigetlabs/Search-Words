@@ -35,7 +35,7 @@ class SearchWordApp < Sinatra::Base
 
   def csv_file_present?(file_params)
     file_params &&
-    file_params[:filename] =~ /.*\.csv$/ &&
+    file_params[:filename] =~ /\.csv\z/ &&
     file_params[:type] == "text/csv"
   end
 
