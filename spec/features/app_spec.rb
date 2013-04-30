@@ -13,21 +13,38 @@ describe SearchWordApp do
     end
 
     describe "submitting the upload form" do
-      before do
-        attach_file "file", "#{settings.root}/spec/fixtures/files/sample.csv"
-        click_button :submit
+      context "with a csv file" do
+        before do
+          attach_file "file", "#{settings.root}/spec/fixtures/files/sample.csv"
+          click_button :submit
+        end
+
+        it "displays a success message" do
+          page.should have_content("file is ready")
+        end
+
+        it "displays a download link" do
+          page.should have_selector("a.file-download")
+        end
+
+        it "displays the upload form" do
+          page.should have_selector("form")
+        end
       end
 
-      it "displays a success message" do
-        page.should have_content("file is ready")
-      end
+      context "with a non-csv file" do
+        before do
+          attach_file "file", "#{settings.root}/spec/fixtures/files/sample.txt"
+          click_button :submit
+        end
 
-      it "displays a download link" do
-        page.should have_selector("a.file-download")
-      end
+        it "displays an error message" do
+          page.should have_content("Please select a .csv file.")
+        end
 
-      it "displays the upload form" do
-        page.should have_selector("form")
+        it "displays the upload form" do
+          page.should have_selector("form")
+        end
       end
     end
   end

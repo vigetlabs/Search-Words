@@ -5,6 +5,6 @@ require "sinatra"
 require "./app"
  
 set :run, false
-set :raise_errors, true
+set :raise_errors, false
  
 run SearchWordApp
