@@ -63,7 +63,7 @@ describe SearchWordApp do
     end
 
     def properly_processed_file_content
-      "lemur,3000\ndurham,60\nbull,55\nfighting,10\n"
+      "lemur,3000\ndurham,60\nbull,55\nfighting,10\nblank,0\n"
     end
   end
 end

@@ -24,10 +24,10 @@ class Phrase
   end
 
   def clean_string(dirty_string)
-    dirty_string.squeeze(" ").downcase
+    dirty_string.to_s.squeeze(" ").downcase
   end
 
-  def convert_to_int(string)
-    string.gsub(/[^\d\.]/,"").to_i
+  def convert_to_int(input)
+    input.to_s.gsub(/[^0-9\.]/,"").to_i unless input.is_a?(Integer)
   end
 end
