@@ -35,11 +35,13 @@ class SearchDataFile
   end
 
   def csv_to_phrases
-    CSV.read(input_path).map { |row| row_to_phrase(row) }
+    CSV.read(input_path).map { |row| row_to_phrase(row) }.compact
   end
 
   def row_to_phrase(row)
     Phrase.new(:text => row[0], :hits => row[1])
+  rescue
+    nil
   end
 
   def processed_list

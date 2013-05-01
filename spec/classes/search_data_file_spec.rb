@@ -8,7 +8,7 @@ describe SearchDataFile do
 
     it "writes the proper data to disk" do
       file.write
-      File.open(filepath, "rb").read.should == "lemur,3000\ndurham,60\nbull,55\nfighting,10\n"
+      File.open(filepath, "rb").read.should == "lemur,3000\ndurham,60\nbull,55\nfighting,10\nblank,0\n"
     end
   end
 
